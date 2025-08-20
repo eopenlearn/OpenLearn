@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Learn - Downloads & Resources</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glassmorphism {
+            background: rgba(34, 34, 68, 0.92); /* More solid, dark background for navbar */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 2px solid #764ba2;
+            box-shadow: 0 2px 12px 0 rgba(34,34,68,0.15);
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .slide-in {
+            animation: slideIn 0.5s ease-out forwards;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hover-scale {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-scale:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .category-card:hover::before {
+            left: 100%;
+        }
+
+        .pulse-dot {
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+            color: #fff !important;
+            text-shadow: 0 1px 4px rgba(34,34,68,0.25);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link.active::after,
+        .nav-link:hover,
+        .nav-link.active {
+            color: #f093fb !important;
+        }
+        .nav-link.active::after,
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Improved select dropdown styling */
+        select,
+        select:focus {
+            background: rgba(34, 34, 68, 0.98) !important;
+            color: #fff !important;
+            border: 1.5px solid #764ba2 !important;
+            box-shadow: 0 2px 8px 0 rgba(34,34,68,0.12);
+        }
+        select option {
+            background: #222244;
+            color: #fff;
+        }
+
+        .hero-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+            animation: move-bg 20s linear infinite;
+        }
+
+        @keyframes move-bg {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        .stats-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stats-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen text-white">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glassmorphism">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl flex items-center justify-center floating">
+                        <i class="fas fa-user-graduate text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold gradient-text">Open Learn</h1>
+                        <p class="text-xs text-gray-300">Premium Resources</p>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="nav-link text-sm font-medium text-white hover:text-purple-300 active" onclick="showSection('home')">
+                        <i class="fas fa-home mr-2"></i>Home
+                    </a>
+                    <a href="#" class="nav-link text-sm font-medium text-white hover:text-purple-300" onclick="showSection('notes')">
+                        <i class="fas fa-sticky-note mr-2"></i>Notes
+                    </a>
+                    <a href="#" class="nav-link text-sm font-medium text-white hover:text-purple-300" onclick="showSection('papers')">
+                        <i class="fas fa-file-alt mr-2"></i>Papers
+                    </a>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-300">Files: <span id="totalFiles" class="font-semibold text-purple-300">0</span></span>
+                    <div class="pulse-dot w-3 h-3 bg-green-400 rounded-full"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <div id="homeSection" class="section">
+        <!-- Hero Section -->
+        <section class="hero-bg pt-24 pb-16 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center">
+                    <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 slide-in">
+                        Your Ultimate
+                        <span class="block bg-gradient-to-r from-yellow-300 to-pink-300 bg-clip-text text-transparent">
+                            Resource Hub
+                        </span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto slide-in">
+                        Access premium educational materials, research papers, and study resources with lightning-fast downloads
+                    </p>
+                    
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-16">
+                        <div class="stats-card rounded-2xl p-6 text-center hover-scale">
+                            <div class="text-3xl font-bold text-yellow-300 mb-2" id="totalFilesHome">0</div>
+                            <div class="text-white/80">Total Resources</div>
+                        </div>
+                        <div class="stats-card rounded-2xl p-6 text-center hover-scale">
+                            <div class="text-3xl font-bold text-blue-300 mb-2" id="totalDownloads">0</div>
+                            <div class="text-white/80">Downloads</div>
+                        </div>
+                        <div class="stats-card rounded-2xl p-6 text-center hover-scale">
+                            <div class="text-3xl font-bold text-purple-300 mb-2">24/7</div>
+                            <div class="text-white/80">Available</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-white mb-4">Browse Categories</h2>
+                    <p class="text-xl text-gray-300">Discover resources organized by type</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- All Files Category -->
+                    <div class="category-card bg-gradient-to-br from-purple-600 to-blue-600 rounded-3xl p-8 text-center hover-scale cursor-pointer" onclick="showAllFiles()">
+                        <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-folder-open text-4xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4">All Files</h3>
+                        <p class="text-white/80 mb-6">Browse all available resources</p>
+                        <div class="bg-white/20 rounded-xl px-4 py-2 text-sm font-semibold" id="allFilesCount">0 Files</div>
+                    </div>
+
+                    <!-- Notes Category -->
+                    <div class="category-card bg-gradient-to-br from-green-600 to-teal-600 rounded-3xl p-8 text-center hover-scale cursor-pointer" onclick="showSection('notes')">
+                        <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-sticky-note text-4xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4">Study Notes</h3>
+                        <p class="text-white/80 mb-6">Comprehensive study materials</p>
+                        <div class="bg-white/20 rounded-xl px-4 py-2 text-sm font-semibold" id="notesCount">0 Files</div>
+                    </div>
+
+                    <!-- Papers Category -->
+                    <div class="category-card bg-gradient-to-br from-orange-600 to-red-600 rounded-3xl p-8 text-center hover-scale cursor-pointer" onclick="showSection('papers')">
+                        <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-file-alt text-4xl text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4">Research Papers</h3>
+                        <p class="text-white/80 mb-6">Academic papers & journals</p>
+                        <div class="bg-white/20 rounded-xl px-4 py-2 text-sm font-semibold" id="papersCount">0 Files</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Notes Section -->
+    <div id="notesSection" class="section hidden pt-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold gradient-text mb-4">Study Notes</h1>
+                <p class="text-xl text-gray-300">Comprehensive study materials and notes</p>
+            </div>
+
+            <!-- Search and Filter for Notes -->
+            <div class="bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl p-6 mb-8 border border-white/20">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1 relative">
+                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input 
+                            type="text" 
+                            id="notesSearchInput" 
+                            placeholder="Search notes..."
+                            class="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-200 text-white placeholder-gray-400"
+                        >
+                    </div>
+                    <div class="relative">
+                        <select 
+                            id="notesFilterSelect" 
+                            class="px-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-white min-w-48 appearance-none cursor-pointer"
+                        >
+                            <option value="latest">Latest Notes</option>
+                            <option value="popular">Most Downloaded</option>
+                            <option value="title">Alphabetical</option>
+                            <option value="author">By Author</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div id="notesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+            <div id="notesNoResults" class="text-center py-12 hidden">
+                <i class="fas fa-sticky-note text-6xl text-gray-600 mb-4"></i>
+                <h3 class="text-2xl font-semibold text-gray-400 mb-2">No notes found</h3>
+                <p class="text-gray-500">Try adjusting your search terms</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Papers Section -->
+    <div id="papersSection" class="section hidden pt-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold gradient-text mb-4">Research Papers</h1>
+                <p class="text-xl text-gray-300">Academic papers and research journals</p>
+            </div>
+
+            <!-- Search and Filter for Papers -->
+            <div class="bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl p-6 mb-8 border border-white/20">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1 relative">
+                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input 
+                            type="text" 
+                            id="papersSearchInput" 
+                            placeholder="Search papers..."
+                            class="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-200 text-white placeholder-gray-400"
+                        >
+                    </div>
+                    <div class="relative">
+                        <select 
+                            id="papersFilterSelect" 
+                            class="px-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-white min-w-48 appearance-none cursor-pointer"
+                        >
+                            <option value="latest">Latest Papers</option>
+                            <option value="popular">Most Downloaded</option>
+                            <option value="title">Alphabetical</option>
+                            <option value="author">By Author</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div id="papersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+            <div id="papersNoResults" class="text-center py-12 hidden">
+                <i class="fas fa-file-alt text-6xl text-gray-600 mb-4"></i>
+                <h3 class="text-2xl font-semibold text-gray-400 mb-2">No papers found</h3>
+                <p class="text-gray-500">Try adjusting your search terms</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loadingState" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 flex items-center justify-center">
+        <div class="bg-white/10 backdrop-blur-lg rounded-3xl p-8 text-center border border-white/20">
+            <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-purple-400 mx-auto mb-4"></div>
+            <span class="text-white text-lg">Loading amazing content...</span>
+        </div>
+    </div>
+
+    <!-- PDF Modal -->
+    <div id="pdfModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white/95 backdrop-blur-lg rounded-3xl w-full max-w-6xl h-5/6 flex flex-col shadow-2xl">
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h3 id="pdfTitle" class="text-xl font-bold text-gray-800 truncate">PDF Viewer</h3>
+                    <button id="closePdfModal" class="text-gray-500 hover:text-gray-700 text-2xl w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="flex-1 p-6">
+                    <iframe id="pdfViewer" class="w-full h-full rounded-2xl border border-gray-200" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Configuration and JavaScript -->
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCnZArfSG3_pr6CLVozA10LPT7qhclcPHg",
+            authDomain: "student-portal-550be.firebaseapp.com",
+            projectId: "student-portal-550be",
+            storageBucket: "student-portal-550be.firebasestorage.app",
+            messagingSenderId: "463802189740",
+            appId: "1:463802189740:web:3326b4cc57980f08da9c09",
+            measurementId: "G-TL38B2SMMF"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Load files and update counts on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadFiles();
+        });
+
+        // Global variables
+        let allFiles = [];
+        let currentSection = 'home';
+
+        // DOM Elements
+        const totalFiles = document.getElementById('totalFiles');
+        const totalFilesHome = document.getElementById('totalFilesHome');
+        const totalDownloads = document.getElementById('totalDownloads');
+        const allFilesCount = document.getElementById('allFilesCount');
+        const notesCount = document.getElementById('notesCount');
+        const papersCount = document.getElementById('papersCount');
+        const loadingState = document.getElementById('loadingState');
+        const pdfModal = document.getElementById('pdfModal');
+        const pdfViewer = document.getElementById('pdfViewer');
+        const pdfTitle = document.getElementById('pdfTitle');
+        const closePdfModal = document.getElementById('closePdfModal');
+
+        // Section navigation
+        function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+            
+            // Show selected section
+            document.getElementById(section + 'Section').classList.remove('hidden');
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            currentSection = section;
+            
+            // Load section-specific content
+            if (section === 'notes') {
+                renderCategoryFiles('notes', 'notesGrid', 'notesNoResults');
+            } else if (section === 'papers') {
+                renderCategoryFiles('papers', 'papersGrid', 'papersNoResults');
+            }
+        }
+
+        function showAllFiles() {
+            // Show all files in a modal or redirect to notes section with all files
+            showSection('notes');
+            renderAllFiles('notesGrid', 'notesNoResults');
+        }
+
+        // Load files from Firestore
+        async function loadFiles() {
+            try {
+                const filesSnapshot = await db.collection('files').get();
+                allFiles = [];
+                
+                filesSnapshot.forEach(doc => {
+                    allFiles.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+
+                updateCounts();
+                loadingState.classList.add('hidden');
+            } catch (error) {
+                console.error('Error loading files:', error);
+                loadingState.innerHTML = '<div class="bg-red-500/20 backdrop-blur-lg rounded-3xl p-8 text-center border border-red-500/20"><p class="text-red-300">Error loading files. Please try again later.</p></div>';
+            }
+        }
+
+        // Update file counts
+        function updateCounts() {
+            const notesFiles = allFiles.filter(file => 
+                file.category?.toLowerCase().includes('note') || 
+                file.title?.toLowerCase().includes('note')
+            );
+            const papersFiles = allFiles.filter(file => 
+                file.category?.toLowerCase().includes('paper') || 
+                file.title?.toLowerCase().includes('paper') ||
+                file.category?.toLowerCase().includes('research')
+            );
+            const totalDownloadCount = allFiles.reduce((sum, file) => sum + (file.downloads || 0), 0);
+
+            totalFiles.textContent = allFiles.length;
+            totalFilesHome.textContent = allFiles.length;
+            totalDownloads.textContent = totalDownloadCount;
+            allFilesCount.textContent = `${allFiles.length} Files`;
+            notesCount.textContent = `${notesFiles.length} Files`;
+            papersCount.textContent = `${papersFiles.length} Files`;
+        }
+
+        // Render files by category
+        function renderCategoryFiles(category, gridId, noResultsId) {
+            const grid = document.getElementById(gridId);
+            const noResults = document.getElementById(noResultsId);
+            
+            let filteredFiles;
+            if (category === 'notes') {
+                filteredFiles = allFiles.filter(file => 
+                    file.category?.toLowerCase().includes('note') || 
+                    file.title?.toLowerCase().includes('note')
+                );
+            } else if (category === 'papers') {
+                filteredFiles = allFiles.filter(file => 
+                    file.category?.toLowerCase().includes('paper') || 
+                    file.title?.toLowerCase().includes('paper') ||
+                    file.category?.toLowerCase().includes('research')
+                );
+            }
+
+            if (filteredFiles.length === 0) {
+                grid.classList.add('hidden');
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            noResults.classList.add('hidden');
+            grid.classList.remove('hidden');
+            
+            renderFilesGrid(filteredFiles, grid);
+        }
+
+        // Render all files
+        function renderAllFiles(gridId, noResultsId) {
+            const grid = document.getElementById(gridId);
+            const noResults = document.getElementById(noResultsId);
+            
+            if (allFiles.length === 0) {
+                grid.classList.add('hidden');
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            noResults.classList.add('hidden');
+            grid.classList.remove('hidden');
+            
+            renderFilesGrid(allFiles, grid);
+        }
+
+        // Render files grid
+        function renderFilesGrid(files, container) {
+            container.innerHTML = files.map(file => {
+                const uploadDate = file.uploadDate ? new Date(file.uploadDate).toLocaleDateString() : 'N/A';
+                const fileType = getFileType(file.downloadLink || '');
+                const iconClass = getFileIcon(fileType);
+                
+                return `
+                    <div class="bg-white/10 backdrop-blur-lg rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 overflow-hidden border border-white/20 hover-scale">
+                        <div class="p-6">
+                            <!-- File Icon -->
+                            <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-gradient-to-r ${getIconGradient(fileType)} rounded-2xl floating">
+                                <i class="${iconClass} text-white text-2xl"></i>
+                            </div>
+
+                            <!-- File Info -->
+                            <div class="text-center mb-4">
+                                <h3 class="font-bold text-lg text-white mb-3 line-clamp-2" title="${file.title || 'Untitled'}">${file.title || 'Untitled'}</h3>
+                                <p class="text-sm text-gray-300 mb-2">
+                                    <i class="fas fa-user mr-2 text-purple-400"></i>
+                                    ${file.author || 'Muditha Kaushalya'}
+                                </p>
+                                <p class="text-xs text-gray-400 mb-2">
+                                    <i class="fas fa-calendar mr-2 text-blue-400"></i>
+                                    ${uploadDate}
+                                </p>
+                                <p class="text-xs text-gray-400 mb-3">
+                                    <i class="fas fa-download mr-2 text-green-400"></i>
+                                    ${file.downloads || 0} downloads
+                                </p>
+                                <span class="inline-block px-3 py-1 text-xs font-semibold text-purple-200 bg-purple-500/30 rounded-full backdrop-blur-sm border border-purple-400/30">
+                                    ${file.category || fileType}
+                                </span>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="space-y-3">
+                                ${fileType === 'PDF' ? `
+                                    <button onclick="viewPDF('${file.downloadLink}', '${file.title}')" 
+                                            class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-3 px-4 rounded-2xl transition-all duration-300 flex items-center justify-center transform hover:scale-105 shadow-lg">
+                                        <i class="fas fa-eye mr-2"></i>
+                                        View PDF
+                                    </button>
+                                ` : ''}
+                                <button onclick="downloadFile('${file.id}', '${file.downloadLink}', '${file.title}')" 
+                                        class="w-full bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white font-semibold py-3 px-4 rounded-2xl transition-all duration-300 flex items-center justify-center transform hover:scale-105 shadow-lg">
+                                        <i class="fas fa-download mr-2"></i>
+                                        Download ${fileType}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Helper functions
+        function getFileType(url) {
+            const extension = url.split('.').pop().toLowerCase();
+            switch(extension) {
+                case 'pdf': return 'PDF';
+                case 'doc':
+                case 'docx': return 'DOCX';
+                case 'zip':
+                case 'rar': return 'ZIP';
+                case 'txt': return 'TXT';
+                case 'jpg':
+                case 'jpeg':
+                case 'png': return 'IMG';
+                default: return 'FILE';
+            }
+        }
+
+        function getFileIcon(fileType) {
+            switch(fileType) {
+                case 'PDF': return 'fas fa-file-pdf';
+                case 'DOCX': return 'fas fa-file-word';
+                case 'ZIP': return 'fas fa-file-archive';
+                case 'TXT': return 'fas fa-file-alt';
+                case 'IMG': return 'fas fa-file-image';
+                default: return 'fas fa-file';
+            }
+        }
+
+        function getIconGradient(fileType) {
+            switch(fileType) {
+                case 'PDF': return 'from-red-500 to-red-600';
+                case 'DOCX': return 'from-blue-500 to-blue-600';
+                case 'ZIP': return 'from-yellow-500 to-yellow-600';
+                case 'TXT': return 'from-gray-500 to-gray-600';
+                case 'IMG': return 'from-green-500 to-green-600';
+                default: return 'from-purple-500 to-purple-600';
+            }
+        }
+
+        // View PDF in modal
+        function viewPDF(url, title) {
+            pdfTitle.textContent = title || 'PDF Viewer';
+            pdfViewer.src = url;
+            pdfModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Download file and track
+        async function downloadFile(fileId, downloadLink, fileName) {
+            try {
+                // Increment download counter
+                await db.collection('files').doc(fileId).update({
+                    downloads: firebase.firestore.FieldValue.increment(1)
+                });
+
+                // Create download link
+                const link = document.createElement('a');
+                link.href = downloadLink;
+                link.download = fileName || 'download';
+                link.target = '_blank';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                // Refresh the files to update download count
+                setTimeout(() => {
+                    loadFiles();
+                }, 1000);
+            } catch (error) {
+                console.error('Error downloading file:', error);
+                // Still attempt download even if counter fails
+                window.open(downloadLink, '_blank');
+            }
+        }
+
+        // Search functionality for sections
+        function setupSectionSearch() {
+            // Notes search
+            const notesSearchInput = document.getElementById('notesSearchInput');
+            const notesFilterSelect = document.getElementById('notesFilterSelect');
+            
+            if (notesSearchInput) {
+                notesSearchInput.addEventListener('input', () => {
+                    searchAndFilterSection('notes', notesSearchInput.value, notesFilterSelect.value, 'notesGrid', 'notesNoResults');
+                });
+            }
+            
+            if (notesFilterSelect) {
+                notesFilterSelect.addEventListener('change', () => {
+                    searchAndFilterSection('notes', notesSearchInput.value, notesFilterSelect.value, 'notesGrid', 'notesNoResults');
+                });
+            }
+
+            // Papers search
+            const papersSearchInput = document.getElementById('papersSearchInput');
+            const papersFilterSelect = document.getElementById('papersFilterSelect');
+            
+            if (papersSearchInput) {
+                papersSearchInput.addEventListener('input', () => {
+                    searchAndFilterSection('papers', papersSearchInput.value, papersFilterSelect.value, 'papersGrid', 'papersNoResults');
+                });
+            }
+            
+            if (papersFilterSelect) {
+                papersFilterSelect.addEventListener('change', () => {
+                    searchAndFilterSection('papers', papersSearchInput.value, papersFilterSelect.value, 'papersGrid', 'papersNoResults');
+                });
+            }
+        }
+
+        // Search and filter for sections
+        function searchAndFilterSection(category, searchTerm, filterType, gridId, noResultsId) {
+            let filteredFiles;
+            
+            // Filter by category first
+            if (category === 'notes') {
+                filteredFiles = allFiles.filter(file => 
+                    file.category?.toLowerCase().includes('note') || 
+                    file.title?.toLowerCase().includes('note')
+                );
+            } else if (category === 'papers') {
+                filteredFiles = allFiles.filter(file => 
+                    file.category?.toLowerCase().includes('paper') || 
+                    file.title?.toLowerCase().includes('paper') ||
+                    file.category?.toLowerCase().includes('research')
+                );
+            }
+
+            // Apply search filter
+            if (searchTerm) {
+                filteredFiles = filteredFiles.filter(file => {
+                    return file.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           file.author?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           file.category?.toLowerCase().includes(searchTerm.toLowerCase());
+                });
+            }
+
+            // Apply sort filter
+            switch(filterType) {
+                case 'latest':
+                    filteredFiles.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
+                    break;
+                case 'popular':
+                    filteredFiles.sort((a, b) => (b.downloads || 0) - (a.downloads || 0));
+                    break;
+                case 'title':
+                    filteredFiles.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+                    break;
+                case 'author':
+                    filteredFiles.sort((a, b) => (a.author || '').localeCompare(b.author || ''));
+                    break;
+            }
+
+            const grid = document.getElementById(gridId);
+            const noResults = document.getElementById(noResultsId);
+
+            if (filteredFiles.length === 0) {
+                grid.classList.add('hidden');
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            noResults.classList.add('hidden');
+            grid.classList.remove('hidden');
+            
+            renderFilesGrid(filteredFiles, grid);
+        }
+
+        // Modal controls
+        closePdfModal.addEventListener('click', () => {
+            pdfModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            pdfViewer.src = '';
+        });
+
+        // Close modal on outside click
+        pdfModal.addEventListener('click', (e) => {
+            if (e.target === pdfModal) {
+                pdfModal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+                pdfViewer.src = '';
+            }
+        });
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', () => {
+            // Always update file count in nav and home
+            loadFiles();
+            setupSectionSearch();
+            // Add mobile menu for responsive design
+            const nav = document.querySelector('nav .max-w-7xl > div');
+            nav.innerHTML += `
+                <button class="md:hidden text-white" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <div id="mobileMenu" class="hidden md:hidden absolute top-16 left-0 right-0 bg-black/90 backdrop-blur-lg border-t border-white/20">
+                    <div class="flex flex-col space-y-4 p-6">
+                        <a href="#" class="text-white hover:text-purple-300 flex items-center" onclick="showSection('home'); toggleMobileMenu();">
+                            <i class="fas fa-home mr-3"></i>Home
+                        </a>
+                        <a href="#" class="text-white hover:text-purple-300 flex items-center" onclick="showSection('notes'); toggleMobileMenu();">
+                            <i class="fas fa-sticky-note mr-3"></i>Notes
+                        </a>
+                        <a href="#" class="text-white hover:text-purple-300 flex items-center" onclick="showSection('papers'); toggleMobileMenu();">
+                            <i class="fas fa-file-alt mr-3"></i>Papers
+                        </a>
+                    </div>
+                </div>
+            `;
+        });
+
+        // Add smooth scrolling and intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = Math.random() * 0.3 + 's';
+                    entry.target.classList.add('slide-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        setTimeout(() => {
+            document.querySelectorAll('.category-card, .stats-card').forEach(el => {
+                observer.observe(el);
+            });
+        }, 100);
+    </script>
+    <!-- Footer -->
+    <footer class="bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 border-t border-white/10 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Site Info -->
+                <div class="text-center md:text-left">
+                    <div class="flex items-center justify-center md:justify-start space-x-3 mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl flex items-center justify-center floating">
+                            <i class="fas fa-cloud-download-alt text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold gradient-text">Open Learn</h3>
+                            <p class="text-xs text-gray-400">Premium Resources</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Your ultimate resource hub for MS Office and Photoshop course materials. 
+                        Access premium educational content with lightning-fast downloads.
+                    </p>
+                </div>
+
+                <!-- Course Information -->
+                <div class="text-center">
+                    <h4 class="text-lg font-semibold text-white mb-4">Course Work</h4>
+                    <div class="space-y-3">
+                        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-4 border border-white/10">
+                            <div class="flex items-center justify-center space-x-3 mb-2">
+                                <i class="fas fa-file-word text-blue-400 text-xl"></i>
+                                <span class="text-white font-medium">MS Office</span>
+                            </div>
+                            <p class="text-gray-400 text-sm">Word, Excel, PowerPoint & Access</p>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-4 border border-white/10">
+                            <div class="flex items-center justify-center space-x-3 mb-2">
+                                <i class="fas fa-paint-brush text-pink-400 text-xl"></i>
+                                <span class="text-white font-medium">Photoshop</span>
+                            </div>
+                            <p class="text-gray-400 text-sm">Photo Editing & Design</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="text-center md:text-right">
+                    <h4 class="text-lg font-semibold text-white mb-4">Site Owner</h4>
+                    <div class="space-y-4">
+                        <div class="bg-gradient-to-r from-purple-600/20 to-blue-600/20 backdrop-blur-lg rounded-2xl p-6 border border-purple-400/30">
+                            <div class="mb-3">
+                                <h5 class="text-xl font-bold text-white mb-1">Muditha Kaushalya</h5>
+                                <p class="text-purple-300 text-sm">Course Creator & Developer</p>
+                            </div>
+                            
+                            <div class="flex items-center justify-center md:justify-end space-x-2 mb-3">
+                                <i class="fas fa-envelope text-blue-400"></i>
+                                <a href="mailto:mudithaexlporing@gmail.com" 
+                                   class="text-gray-300 hover:text-white transition-colors duration-200 text-sm break-all">
+                                    mudithaexlporing@gmail.com
+                                </a>
+                            </div>
+
+                            <div class="flex items-center justify-center md:justify-end space-x-4">
+                                <button onclick="window.location.href='mailto:mudithaexlporing@gmail.com'" 
+                                        class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105 flex items-center space-x-2">
+                                    <i class="fas fa-paper-plane"></i>
+                                    <span>Contact</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Section -->
+            <div class="border-t border-white/10 mt-8 pt-6">
+                <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+                    <div class="flex items-center space-x-6">
+                        <p class="text-gray-400 text-sm">
+                            © 2025 Open Learn. All rights reserved.
+                        </p>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                            <span class="text-green-400 text-xs">Online</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-6">
+                        <div class="flex items-center space-x-4 text-gray-400 text-sm">
+                            <span>Built with</span>
+                            <i class="fas fa-heart text-red-400 animate-pulse"></i>
+                            <span>for education</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fab fa-html5 text-orange-400"></i>
+                            <i class="fab fa-css3-alt text-blue-400"></i>
+                            <i class="fab fa-js-square text-yellow-400"></i>
+                            <i class="fab fa-google text-green-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
