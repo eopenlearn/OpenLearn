@@ -192,7 +192,10 @@
                     <a href="#" class="nav-link text-sm font-medium text-white hover:text-purple-300" onclick="showSection('notes')">
                         <i class="fas fa-sticky-note mr-2"></i>Notes
                     </a>
-                    <a href="#" class="nav-link text-sm font-medium text-white hover:text-purple-300" onclick="showSection('papers')">
+                    <a href="#" class="nav-link text-sm font-medium text-white hover:text-purple-300" onclick="showSection('assignment')">
+                        <i class="fas fa-tasks mr-2"></i>Assignments
+                    </a>
+                    <a href="#" class="nav-link text-sm font-medium text-white hover:text-purple-300" onclick="showSection('Papers')">
                         <i class="fas fa-file-alt mr-2"></i>Papers
                     </a>
                 </div>
@@ -260,7 +263,7 @@
                         </span>
                     </h1>
                     <p class="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto slide-in">
-                        Access premium educational materials, research papers, and study resources with lightning-fast downloads
+                        Access premium educational materials, research Papers, and study resources with lightning-fast downloads
                     </p>
                     
                     <!-- Stats Cards -->
@@ -312,13 +315,13 @@
                     </div>
 
                     <!-- Papers Category -->
-                    <div class="category-card bg-gradient-to-br from-orange-600 to-red-600 rounded-3xl p-8 text-center hover-scale cursor-pointer" onclick="showSection('papers')">
+                    <div class="category-card bg-gradient-to-br from-orange-600 to-red-600 rounded-3xl p-8 text-center hover-scale cursor-pointer" onclick="showSection('Papers')">
                         <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
                             <i class="fas fa-file-alt text-4xl text-white"></i>
                         </div>
                         <h3 class="text-2xl font-bold text-white mb-4">Research Papers</h3>
-                        <p class="text-white/80 mb-6">Academic papers & journals</p>
-                        <div class="bg-white/20 rounded-xl px-4 py-2 text-sm font-semibold" id="papersCount">0 Files</div>
+                        <p class="text-white/80 mb-6">Academic Papers & journals</p>
+                        <div class="bg-white/20 rounded-xl px-4 py-2 text-sm font-semibold" id="PapersCount">0 Files</div>
                     </div>
                 </div>
             </div>
@@ -332,7 +335,6 @@
                 <h1 class="text-4xl font-bold gradient-text mb-4">Study Notes</h1>
                 <p class="text-xl text-gray-300">Comprehensive study materials and notes</p>
             </div>
-
             <!-- Search and Filter for Notes -->
             <div class="bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl p-6 mb-8 border border-white/20">
                 <div class="flex flex-col md:flex-row gap-4">
@@ -348,7 +350,7 @@
                     <div class="relative">
                         <select 
                             id="courseCategoryFilterNotes" 
-                            class="px-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-white min-w-48 appearance-none cursor-pointer"
+                            class="px-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-white min-w-[16rem] appearance-none cursor-pointer"
                         >
                             <option value="all">All Course Categories</option>
                             <option value="Word">Microsoft Word</option>
@@ -362,7 +364,7 @@
                     <div class="relative">
                         <select 
                             id="notesFilterSelect" 
-                            class="px-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-white min-w-48 appearance-none cursor-pointer"
+                            class="px-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-white min-w-[16rem] appearance-none cursor-pointer"
                         >
                             <option value="latest">Latest Notes</option>
                             <option value="popular">Most Downloaded</option>
@@ -373,7 +375,6 @@
                     </div>
                 </div>
             </div>
-
             <div id="notesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
             <div id="notesNoResults" class="text-center py-12 hidden">
                 <i class="fas fa-sticky-note text-6xl text-gray-600 mb-4"></i>
@@ -383,30 +384,29 @@
         </div>
     </div>
 
-    <!-- Papers Section -->
-    <div id="papersSection" class="section hidden pt-24">
+    <!-- Assignment Section -->
+    <div id="assignmentSection" class="section hidden pt-24">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="text-center mb-12">
-                <h1 class="text-4xl font-bold gradient-text mb-4">Research Papers</h1>
-                <p class="text-xl text-gray-300">Academic papers and research journals</p>
+                <h1 class="text-4xl font-bold gradient-text mb-4">Assignments</h1>
+                <p class="text-xl text-gray-300">All uploaded assignments and coursework</p>
             </div>
-
-            <!-- Search and Filter for Papers -->
+            <!-- Search and Filter for Assignments -->
             <div class="bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl p-6 mb-8 border border-white/20">
                 <div class="flex flex-col md:flex-row gap-4">
                     <div class="flex-1 relative">
                         <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         <input 
                             type="text" 
-                            id="papersSearchInput" 
-                            placeholder="Search papers..."
+                            id="assignmentSearchInput" 
+                            placeholder="Search assignments..."
                             class="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-200 text-white placeholder-gray-400"
                         >
                     </div>
                     <div class="relative">
                         <select 
-                            id="courseCategoryFilterPapers" 
-                            class="px-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-white min-w-48 appearance-none cursor-pointer"
+                            id="courseCategoryFilterAssignment" 
+                            class="px-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-white min-w-[16rem] appearance-none cursor-pointer"
                         >
                             <option value="all">All Course Categories</option>
                             <option value="Word">Microsoft Word</option>
@@ -419,8 +419,65 @@
                     </div>
                     <div class="relative">
                         <select 
-                            id="papersFilterSelect" 
-                            class="px-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-white min-w-48 appearance-none cursor-pointer"
+                            id="assignmentFilterSelect" 
+                            class="px-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-white min-w-[16rem] appearance-none cursor-pointer"
+                        >
+                            <option value="latest">Latest Assignments</option>
+                            <option value="popular">Most Downloaded</option>
+                            <option value="title">Alphabetical</option>
+                            <option value="author">By Author</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                    </div>
+                </div>
+            </div>
+            <div id="assignmentGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+            <div id="assignmentNoResults" class="text-center py-12 hidden">
+                <i class="fas fa-tasks text-6xl text-gray-600 mb-4"></i>
+                <h3 class="text-2xl font-semibold text-gray-400 mb-2">No assignments found</h3>
+                <p class="text-gray-500">Try adjusting your search terms</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Papers Section -->
+    <div id="PapersSection" class="section hidden pt-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold gradient-text mb-4">Research Papers</h1>
+                <p class="text-xl text-gray-300">Academic Papers and research journals</p>
+            </div>
+
+            <!-- Search and Filter for Papers -->
+            <div class="bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl p-6 mb-8 border border-white/20">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-1 relative">
+                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input 
+                            type="text" 
+                            id="PapersSearchInput" 
+                            placeholder="Search Papers..."
+                            class="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-200 text-white placeholder-gray-400"
+                        >
+                    </div>
+                    <div class="relative">
+                        <select 
+                            id="courseCategoryFilterPapers" 
+                            class="px-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-white min-w-[16rem] appearance-none cursor-pointer"
+                        >
+                            <option value="all">All Course Categories</option>
+                            <option value="Word">Microsoft Word</option>
+                            <option value="Excel">Microsoft Excel</option>
+                            <option value="PowerPoint">Microsoft PowerPoint</option>
+                            <option value="Access">Microsoft Access</option>
+                            <option value="Photoshop">Photoshop</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                    </div>
+                    <div class="relative">
+                        <select 
+                            id="PapersFilterSelect" 
+                            class="px-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-white min-w-[16rem] appearance-none cursor-pointer"
                         >
                             <option value="latest">Latest Papers</option>
                             <option value="popular">Most Downloaded</option>
@@ -432,10 +489,10 @@
                 </div>
             </div>
 
-            <div id="papersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
-            <div id="papersNoResults" class="text-center py-12 hidden">
+            <div id="PapersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+            <div id="PapersNoResults" class="text-center py-12 hidden">
                 <i class="fas fa-file-alt text-6xl text-gray-600 mb-4"></i>
-                <h3 class="text-2xl font-semibold text-gray-400 mb-2">No papers found</h3>
+                <h3 class="text-2xl font-semibold text-gray-400 mb-2">No Papers found</h3>
                 <p class="text-gray-500">Try adjusting your search terms</p>
             </div>
         </div>
@@ -498,7 +555,7 @@
         const totalDownloads = document.getElementById('totalDownloads');
         const allFilesCount = document.getElementById('allFilesCount');
         const notesCount = document.getElementById('notesCount');
-        const papersCount = document.getElementById('papersCount');
+        const PapersCount = document.getElementById('PapersCount');
         const loadingState = document.getElementById('loadingState');
         const pdfModal = document.getElementById('pdfModal');
         const pdfViewer = document.getElementById('pdfViewer');
@@ -509,21 +566,19 @@
         function showSection(section) {
             // Hide all sections
             document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
-            
             // Show selected section
             document.getElementById(section + 'Section').classList.remove('hidden');
-            
             // Update active nav link
             document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
             event.target.classList.add('active');
-            
             currentSection = section;
-            
             // Load section-specific content
             if (section === 'notes') {
                 renderCategoryFiles('notes', 'notesGrid', 'notesNoResults');
-            } else if (section === 'papers') {
-                renderCategoryFiles('papers', 'papersGrid', 'papersNoResults');
+            } else if (section === 'assignment') {
+                renderCategoryFiles('Assignment', 'assignmentGrid', 'assignmentNoResults');
+            } else if (section === 'Papers') {
+                renderCategoryFiles('Papers', 'PapersGrid', 'PapersNoResults');
             }
         }
 
@@ -561,7 +616,7 @@
                 file.category?.toLowerCase().includes('note') || 
                 file.title?.toLowerCase().includes('note')
             );
-            const papersFiles = allFiles.filter(file => 
+            const PapersFiles = allFiles.filter(file => 
                 file.category?.toLowerCase().includes('paper') || 
                 file.title?.toLowerCase().includes('paper') ||
                 file.category?.toLowerCase().includes('research')
@@ -573,37 +628,39 @@
             totalDownloads.textContent = totalDownloadCount;
             allFilesCount.textContent = `${allFiles.length} Files`;
             notesCount.textContent = `${notesFiles.length} Files`;
-            papersCount.textContent = `${papersFiles.length} Files`;
+            PapersCount.textContent = `${PapersFiles.length} Files`;
         }
 
         // Render files by category
         function renderCategoryFiles(category, gridId, noResultsId) {
             const grid = document.getElementById(gridId);
             const noResults = document.getElementById(noResultsId);
-            
             let filteredFiles;
             if (category === 'notes') {
                 filteredFiles = allFiles.filter(file => 
                     file.category?.toLowerCase().includes('note') || 
                     file.title?.toLowerCase().includes('note')
                 );
-            } else if (category === 'papers') {
+            } else if (category === 'assignment' || category === 'Assignment') {
                 filteredFiles = allFiles.filter(file => 
-                    file.category?.toLowerCase().includes('paper') || 
-                    file.title?.toLowerCase().includes('paper') ||
-                    file.category?.toLowerCase().includes('research')
+                    file.category?.toLowerCase() === 'assignment' || file.title?.toLowerCase().includes('assignment')
                 );
+            } else if (category === 'Papers') {
+                filteredFiles = allFiles.filter(file => {
+                    const cat = file.category?.toLowerCase() || '';
+                    return (
+                        (cat.includes('paper') || cat.includes('research')) && cat !== 'assignment'
+                    ) ||
+                    (file.title?.toLowerCase().includes('paper') && cat !== 'assignment');
+                });
             }
-
-            if (filteredFiles.length === 0) {
+            if (!filteredFiles || filteredFiles.length === 0) {
                 grid.classList.add('hidden');
                 noResults.classList.remove('hidden');
                 return;
             }
-
             noResults.classList.add('hidden');
             grid.classList.remove('hidden');
-            
             renderFilesGrid(filteredFiles, grid);
         }
 
@@ -808,24 +865,42 @@
                     searchAndFilterSection('notes', notesSearchInput.value, notesFilterSelect.value, 'notesGrid', 'notesNoResults', courseCategoryFilterNotes.value);
                 });
             }
-
-            // Papers search
-            const papersSearchInput = document.getElementById('papersSearchInput');
-            const papersFilterSelect = document.getElementById('papersFilterSelect');
-            const courseCategoryFilterPapers = document.getElementById('courseCategoryFilterPapers');
-            if (papersSearchInput) {
-                papersSearchInput.addEventListener('input', () => {
-                    searchAndFilterSection('papers', papersSearchInput.value, papersFilterSelect.value, 'papersGrid', 'papersNoResults', courseCategoryFilterPapers.value);
+            // Assignment search
+            const assignmentSearchInput = document.getElementById('assignmentSearchInput');
+            const assignmentFilterSelect = document.getElementById('assignmentFilterSelect');
+            const courseCategoryFilterAssignment = document.getElementById('courseCategoryFilterAssignment');
+            if (assignmentSearchInput) {
+                assignmentSearchInput.addEventListener('input', () => {
+                    searchAndFilterSection('Assignment', assignmentSearchInput.value, assignmentFilterSelect.value, 'assignmentGrid', 'assignmentNoResults', courseCategoryFilterAssignment.value);
                 });
             }
-            if (papersFilterSelect) {
-                papersFilterSelect.addEventListener('change', () => {
-                    searchAndFilterSection('papers', papersSearchInput.value, papersFilterSelect.value, 'papersGrid', 'papersNoResults', courseCategoryFilterPapers.value);
+            if (assignmentFilterSelect) {
+                assignmentFilterSelect.addEventListener('change', () => {
+                    searchAndFilterSection('Assignment', assignmentSearchInput.value, assignmentFilterSelect.value, 'assignmentGrid', 'assignmentNoResults', courseCategoryFilterAssignment.value);
+                });
+            }
+            if (courseCategoryFilterAssignment) {
+                courseCategoryFilterAssignment.addEventListener('change', () => {
+                    searchAndFilterSection('Assignment', assignmentSearchInput.value, assignmentFilterSelect.value, 'assignmentGrid', 'assignmentNoResults', courseCategoryFilterAssignment.value);
+                });
+            }
+            // Papers search
+            const PapersSearchInput = document.getElementById('PapersSearchInput');
+            const PapersFilterSelect = document.getElementById('PapersFilterSelect');
+            const courseCategoryFilterPapers = document.getElementById('courseCategoryFilterPapers');
+            if (PapersSearchInput) {
+                PapersSearchInput.addEventListener('input', () => {
+                    searchAndFilterSection('Papers', PapersSearchInput.value, PapersFilterSelect.value, 'PapersGrid', 'PapersNoResults', courseCategoryFilterPapers.value);
+                });
+            }
+            if (PapersFilterSelect) {
+                PapersFilterSelect.addEventListener('change', () => {
+                    searchAndFilterSection('Papers', PapersSearchInput.value, PapersFilterSelect.value, 'PapersGrid', 'PapersNoResults', courseCategoryFilterPapers.value);
                 });
             }
             if (courseCategoryFilterPapers) {
                 courseCategoryFilterPapers.addEventListener('change', () => {
-                    searchAndFilterSection('papers', papersSearchInput.value, papersFilterSelect.value, 'papersGrid', 'papersNoResults', courseCategoryFilterPapers.value);
+                    searchAndFilterSection('Papers', PapersSearchInput.value, PapersFilterSelect.value, 'PapersGrid', 'PapersNoResults', courseCategoryFilterPapers.value);
                 });
             }
         }
@@ -838,17 +913,34 @@
                 filteredFiles = allFiles.filter(file => 
                     (file.category?.toLowerCase().includes('note') || file.title?.toLowerCase().includes('note'))
                 );
-            } else if (category === 'papers') {
+            } else if (category === 'Assignment' || category === 'assignment') {
                 filteredFiles = allFiles.filter(file => 
-                    (file.category?.toLowerCase().includes('paper') || file.title?.toLowerCase().includes('paper') || file.category?.toLowerCase().includes('research'))
+                    file.category?.toLowerCase() === 'assignment' || file.title?.toLowerCase().includes('assignment')
                 );
+            } else if (category === 'Papers') {
+                filteredFiles = allFiles.filter(file => {
+                    const cat = file.category?.toLowerCase() || '';
+                    return (
+                        (cat.includes('paper') || cat.includes('research')) && cat !== 'assignment'
+                    ) ||
+                    (file.title?.toLowerCase().includes('paper') && cat !== 'assignment');
+                });
             }
 
             // Filter by course category if provided
             if (arguments.length > 5) {
                 const courseCategory = arguments[5];
                 if (courseCategory && courseCategory !== 'all') {
-                    filteredFiles = filteredFiles.filter(file => file.courseCategory === courseCategory);
+                    filteredFiles = filteredFiles.filter(file => {
+                        // Only match courseCategory, but for Papers section, exclude assignments
+                        if (category === 'Papers') {
+                            return file.courseCategory === courseCategory && file.category?.toLowerCase() !== 'assignment';
+                        } else if (category === 'Assignment' || category === 'assignment') {
+                            return file.courseCategory === courseCategory && file.category?.toLowerCase() === 'assignment';
+                        } else {
+                            return file.courseCategory === courseCategory;
+                        }
+                    });
                 }
             }
 
@@ -933,7 +1025,7 @@
                         <a href="#" class="text-white hover:text-purple-300 flex items-center" onclick="showSection('notes'); toggleMobileMenu();">
                             <i class="fas fa-sticky-note mr-3"></i>Notes
                         </a>
-                        <a href="#" class="text-white hover:text-purple-300 flex items-center" onclick="showSection('papers'); toggleMobileMenu();">
+                        <a href="#" class="text-white hover:text-purple-300 flex items-center" onclick="showSection('Papers'); toggleMobileMenu();">
                             <i class="fas fa-file-alt mr-3"></i>Papers
                         </a>
                     </div>
