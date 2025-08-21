@@ -200,6 +200,48 @@
                 <div class="flex items-center space-x-4">
                     <span class="text-sm text-gray-300">Files: <span id="totalFiles" class="font-semibold text-purple-300">0</span></span>
                     <div class="pulse-dot w-3 h-3 bg-green-400 rounded-full"></div>
+                    <!-- Notification Bell Icon -->
+                    <div class="relative">
+                        <button id="notificationBtn" class="relative focus:outline-none" title="New File Updates">
+                            <i class="fas fa-bell text-white text-xl"></i>
+                            <span id="notificationDot" class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border-2 border-slate-900 hidden"></span>
+                        </button>
+                        <div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-80 bg-white/10 backdrop-blur-lg text-white rounded-2xl shadow-2xl z-50 border border-white/20">
+                            <div class="p-4 border-b border-white/10 font-semibold text-base bg-gradient-to-r from-purple-600/30 to-blue-600/30 rounded-t-2xl">Recent File Uploads</div>
+                            <ul id="notificationList" class="max-h-64 overflow-y-auto divide-y divide-white/10"></ul>
+                            <div class="p-2 text-xs text-gray-300 text-center">Click outside to close</div>
+                        </div>
+                        <style>
+                        @media (max-width: 600px) {
+                            #notificationDropdown {
+                                width: 98vw !important;
+                                min-width: 0 !important;
+                                left: 50% !important;
+                                right: auto !important;
+                                transform: translateX(-50%) !important;
+                                margin-top: 12px !important;
+                                border-radius: 1.25rem !important;
+                                box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37) !important;
+                                padding-left: 0.5rem !important;
+                                padding-right: 0.5rem !important;
+                            }
+                        }
+                        .notification-hover:hover {
+                            background: linear-gradient(90deg, rgba(118,75,162,0.25) 0%, rgba(102,126,234,0.25) 100%);
+                            color: #fff;
+                        }
+                        </style>
+                        <style>
+                        @media (max-width: 500px) {
+                            #notificationDropdown { width: 95vw !important; min-width: 0 !important; }
+                        }
+                        .notification-hover:hover {
+                            background: linear-gradient(90deg, rgba(118,75,162,0.25) 0%, rgba(102,126,234,0.25) 100%);
+                            color: #fff;
+                        }
+                        </style>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -305,6 +347,20 @@
                     </div>
                     <div class="relative">
                         <select 
+                            id="courseCategoryFilterNotes" 
+                            class="px-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-white min-w-48 appearance-none cursor-pointer"
+                        >
+                            <option value="all">All Course Categories</option>
+                            <option value="Word">Microsoft Word</option>
+                            <option value="Excel">Microsoft Excel</option>
+                            <option value="PowerPoint">Microsoft PowerPoint</option>
+                            <option value="Access">Microsoft Access</option>
+                            <option value="Photoshop">Photoshop</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+                    </div>
+                    <div class="relative">
+                        <select 
                             id="notesFilterSelect" 
                             class="px-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-white min-w-48 appearance-none cursor-pointer"
                         >
@@ -346,6 +402,20 @@
                             placeholder="Search papers..."
                             class="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all duration-200 text-white placeholder-gray-400"
                         >
+                    </div>
+                    <div class="relative">
+                        <select 
+                            id="courseCategoryFilterPapers" 
+                            class="px-4 py-3 bg-white/10 border border-white/20 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-white min-w-48 appearance-none cursor-pointer"
+                        >
+                            <option value="all">All Course Categories</option>
+                            <option value="Word">Microsoft Word</option>
+                            <option value="Excel">Microsoft Excel</option>
+                            <option value="PowerPoint">Microsoft PowerPoint</option>
+                            <option value="Access">Microsoft Access</option>
+                            <option value="Photoshop">Photoshop</option>
+                        </select>
+                        <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
                     </div>
                     <div class="relative">
                         <select 
@@ -478,6 +548,7 @@
 
                 updateCounts();
                 loadingState.classList.add('hidden');
+                updateNotifications();
             } catch (error) {
                 console.error('Error loading files:', error);
                 loadingState.innerHTML = '<div class="bg-red-500/20 backdrop-blur-lg rounded-3xl p-8 text-center border border-red-500/20"><p class="text-red-300">Error loading files. Please try again later.</p></div>';
@@ -555,17 +626,48 @@
 
         // Render files grid
         function renderFilesGrid(files, container) {
+            // Always recalculate 'NEW' status for every render
+            const now = Date.now();
+            const threeDaysMs = 3 * 24 * 60 * 60 * 1000;
             container.innerHTML = files.map(file => {
                 const uploadDate = file.uploadDate ? new Date(file.uploadDate).toLocaleDateString() : 'N/A';
                 const fileType = getFileType(file.downloadLink || '');
-                const iconClass = getFileIcon(fileType);
-                
+                // Choose icon and gradient by courseCategory if present, else fallback to fileType
+                let courseIcon = '', courseGradient = '';
+                switch ((file.courseCategory || '').toLowerCase()) {
+                    case 'word':
+                        courseIcon = 'fas fa-file-word';
+                        courseGradient = 'from-blue-500 to-blue-700';
+                        break;
+                    case 'excel':
+                        courseIcon = 'fas fa-file-excel';
+                        courseGradient = 'from-green-500 to-green-700';
+                        break;
+                    case 'powerpoint':
+                        courseIcon = 'fas fa-file-powerpoint';
+                        courseGradient = 'from-orange-500 to-red-500';
+                        break;
+                    case 'access':
+                        courseIcon = 'fas fa-database';
+                        courseGradient = 'from-pink-600 to-red-700';
+                        break;
+                    case 'photoshop':
+                        courseIcon = 'fas fa-paint-brush';
+                        courseGradient = 'from-indigo-500 to-blue-900';
+                        break;
+                    default:
+                        courseIcon = getFileIcon(fileType);
+                        courseGradient = getIconGradient(fileType);
+                }
+                // recalculate isNew for every card
+                const isNew = file.uploadDate && (now - new Date(file.uploadDate).getTime() < threeDaysMs);
                 return `
-                    <div class="bg-white/10 backdrop-blur-lg rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 overflow-hidden border border-white/20 hover-scale">
+                    <div class="bg-white/10 backdrop-blur-lg rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 overflow-hidden border border-white/20 hover-scale relative">
+                        ${isNew ? '<span class="absolute top-4 right-4 bg-gradient-to-r from-pink-500 to-yellow-400 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg z-10 animate-pulse">NEW</span>' : ''}
                         <div class="p-6">
                             <!-- File Icon -->
-                            <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-gradient-to-r ${getIconGradient(fileType)} rounded-2xl floating">
-                                <i class="${iconClass} text-white text-2xl"></i>
+                            <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-gradient-to-r ${courseGradient} rounded-2xl floating">
+                                <i class="${courseIcon} text-white text-2xl"></i>
                             </div>
 
                             <!-- File Info -->
@@ -690,32 +792,40 @@
             // Notes search
             const notesSearchInput = document.getElementById('notesSearchInput');
             const notesFilterSelect = document.getElementById('notesFilterSelect');
-            
+            const courseCategoryFilterNotes = document.getElementById('courseCategoryFilterNotes');
             if (notesSearchInput) {
                 notesSearchInput.addEventListener('input', () => {
-                    searchAndFilterSection('notes', notesSearchInput.value, notesFilterSelect.value, 'notesGrid', 'notesNoResults');
+                    searchAndFilterSection('notes', notesSearchInput.value, notesFilterSelect.value, 'notesGrid', 'notesNoResults', courseCategoryFilterNotes.value);
                 });
             }
-            
             if (notesFilterSelect) {
                 notesFilterSelect.addEventListener('change', () => {
-                    searchAndFilterSection('notes', notesSearchInput.value, notesFilterSelect.value, 'notesGrid', 'notesNoResults');
+                    searchAndFilterSection('notes', notesSearchInput.value, notesFilterSelect.value, 'notesGrid', 'notesNoResults', courseCategoryFilterNotes.value);
+                });
+            }
+            if (courseCategoryFilterNotes) {
+                courseCategoryFilterNotes.addEventListener('change', () => {
+                    searchAndFilterSection('notes', notesSearchInput.value, notesFilterSelect.value, 'notesGrid', 'notesNoResults', courseCategoryFilterNotes.value);
                 });
             }
 
             // Papers search
             const papersSearchInput = document.getElementById('papersSearchInput');
             const papersFilterSelect = document.getElementById('papersFilterSelect');
-            
+            const courseCategoryFilterPapers = document.getElementById('courseCategoryFilterPapers');
             if (papersSearchInput) {
                 papersSearchInput.addEventListener('input', () => {
-                    searchAndFilterSection('papers', papersSearchInput.value, papersFilterSelect.value, 'papersGrid', 'papersNoResults');
+                    searchAndFilterSection('papers', papersSearchInput.value, papersFilterSelect.value, 'papersGrid', 'papersNoResults', courseCategoryFilterPapers.value);
                 });
             }
-            
             if (papersFilterSelect) {
                 papersFilterSelect.addEventListener('change', () => {
-                    searchAndFilterSection('papers', papersSearchInput.value, papersFilterSelect.value, 'papersGrid', 'papersNoResults');
+                    searchAndFilterSection('papers', papersSearchInput.value, papersFilterSelect.value, 'papersGrid', 'papersNoResults', courseCategoryFilterPapers.value);
+                });
+            }
+            if (courseCategoryFilterPapers) {
+                courseCategoryFilterPapers.addEventListener('change', () => {
+                    searchAndFilterSection('papers', papersSearchInput.value, papersFilterSelect.value, 'papersGrid', 'papersNoResults', courseCategoryFilterPapers.value);
                 });
             }
         }
@@ -723,19 +833,23 @@
         // Search and filter for sections
         function searchAndFilterSection(category, searchTerm, filterType, gridId, noResultsId) {
             let filteredFiles;
-            
             // Filter by category first
             if (category === 'notes') {
                 filteredFiles = allFiles.filter(file => 
-                    file.category?.toLowerCase().includes('note') || 
-                    file.title?.toLowerCase().includes('note')
+                    (file.category?.toLowerCase().includes('note') || file.title?.toLowerCase().includes('note'))
                 );
             } else if (category === 'papers') {
                 filteredFiles = allFiles.filter(file => 
-                    file.category?.toLowerCase().includes('paper') || 
-                    file.title?.toLowerCase().includes('paper') ||
-                    file.category?.toLowerCase().includes('research')
+                    (file.category?.toLowerCase().includes('paper') || file.title?.toLowerCase().includes('paper') || file.category?.toLowerCase().includes('research'))
                 );
+            }
+
+            // Filter by course category if provided
+            if (arguments.length > 5) {
+                const courseCategory = arguments[5];
+                if (courseCategory && courseCategory !== 'all') {
+                    filteredFiles = filteredFiles.filter(file => file.courseCategory === courseCategory);
+                }
             }
 
             // Apply search filter
@@ -848,6 +962,51 @@
                 observer.observe(el);
             });
         }, 100);
+
+        // Notification logic
+        function updateNotifications() {
+            // Only show files uploaded in the last 3 days (72 hours)
+            const now = Date.now();
+            const threeDaysMs = 3 * 24 * 60 * 60 * 1000;
+            const recentFiles = [...allFiles]
+                .filter(f => f.uploadDate && (now - new Date(f.uploadDate).getTime() < threeDaysMs))
+                .sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate))
+                .slice(0, 10);
+            const notificationList = document.getElementById('notificationList');
+            const notificationDot = document.getElementById('notificationDot');
+            if (!notificationList) return;
+            notificationList.innerHTML = recentFiles.length === 0
+                ? '<li class="p-4 text-gray-500 text-center">No new files</li>'
+                : recentFiles.map(file => `<li class="p-3 rounded-xl mx-2 my-1 transition-colors duration-200 cursor-pointer notification-hover">${file.title || 'Untitled'}</li>`).join('');
+            // Show red dot if there are new files (uploaded in last 3 days)
+            if (recentFiles.length > 0) {
+                notificationDot.classList.remove('hidden');
+            } else {
+                notificationDot.classList.add('hidden');
+            }
+        }
+
+        // Notification dropdown toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('notificationBtn');
+            const dropdown = document.getElementById('notificationDropdown');
+            if (btn && dropdown) {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('hidden');
+                });
+                // Hide dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!dropdown.classList.contains('hidden')) {
+                        dropdown.classList.add('hidden');
+                    }
+                });
+                // Prevent closing when clicking inside
+                dropdown.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            }
+        });
     </script>
     <!-- Footer -->
     <footer class="bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 border-t border-white/10 mt-20">
